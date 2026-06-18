@@ -36,4 +36,3 @@ build/
 .env
 *.env
 application-secret.properties
-application-dev.properties
