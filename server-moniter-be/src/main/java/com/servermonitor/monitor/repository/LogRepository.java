@@ -5,7 +5,9 @@ import com.servermonitor.monitor.model.Server;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LogRepository extends JpaRepository<Log, Long> {
     List<Log> findByServerIdOrderByCreatedAtDesc(String serverId);
+    Optional<Log> findFirstByServerIdOrderByCreatedAtDesc(String serverId);
 }

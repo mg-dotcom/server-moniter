@@ -91,8 +91,8 @@ public class OperatorService {
         serverOperatorRepository.save(serverOperator);
 
         Log latestLog = logRepository
-                .findByServerIdOrderByCreatedAtDesc(serverId)
-                .stream().findFirst().orElse(null);
+                .findFirstByServerIdOrderByCreatedAtDesc(serverId)
+                .orElse(null);
 
         if (latestLog != null && latestLog.getStatus() == ServerStatus.DOWN) {
             String alertMessage = """

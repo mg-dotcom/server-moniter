@@ -1,0 +1,16 @@
+export type ServerStatus = "UP" | "DOWN" | "UNKNOWN";
+
+export interface Operator {
+  id: string;
+  name: string;
+  lineUserId: string;
+}
+
+export interface Server {
+  id: string;
+  name: string;
+  endpoint: string;
+  isMonitored: boolean;
+  currentStatus: ServerStatus;
+  operators: Operator[];
+}

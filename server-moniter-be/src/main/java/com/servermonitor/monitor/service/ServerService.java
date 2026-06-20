@@ -6,8 +6,11 @@ import com.servermonitor.monitor.dto.server.ServerResponse;
 import com.servermonitor.monitor.exception.ConflictException;
 import com.servermonitor.monitor.exception.ResourceNotFoundException;
 import com.servermonitor.monitor.mapper.OperatorMapper;
+import com.servermonitor.monitor.model.Log;
 import com.servermonitor.monitor.model.Operator;
 import com.servermonitor.monitor.model.Server;
+import com.servermonitor.monitor.model.ServerStatus;
+import com.servermonitor.monitor.repository.LogRepository;
 import com.servermonitor.monitor.repository.OperatorRepository;
 import com.servermonitor.monitor.repository.ServerRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ServerService {
     private final ServerRepository serverRepository;
+    private final LogRepository logRepository;
 
     public List<ServerResponse> getAllServers() {
         return serverRepository.findAll().stream().map(this::toServerRespond).toList();
@@ -66,11 +70,17 @@ public class ServerService {
         return "Server ID " + id + " Deleted successfully";
     }
 
-    private ServerResponse toServerRespond(Server server){
+    private ServerResponse toServerRespond(Server server) {
+
         List<OperatorResponse> operators = server.getServerOperators()
                 .stream()
                 .map(so -> OperatorMapper.toResponse(so.getOperator()))
                 .toList();
+
+        ServerStatus currentStatus = logRepository
+                .findFirstByServerIdOrderByCreatedAtDesc(server.getId())
+                .map(Log::getStatus)
+                .orElse(ServerStatus.UNKNOWN);
 
         return ServerResponse.builder()
                 .id(server.getId())
@@ -78,6 +88,7 @@ public class ServerService {
                 .endpoint(server.getEndpoint())
                 .isMonitored(server.getIsMonitored())
                 .operators(operators)
+                .currentStatus(currentStatus)
                 .build();
     }
 }

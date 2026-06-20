@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final OperatorRepository operatorRepository;
-    private final PasswordEncoder passwordEncoder;
 
     public String login(String username, String password) {
         try {

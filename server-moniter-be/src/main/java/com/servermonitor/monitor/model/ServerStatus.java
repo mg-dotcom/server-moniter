@@ -2,5 +2,6 @@ package com.servermonitor.monitor.model;
 
 public enum ServerStatus {
     UP,
-    DOWN
+    DOWN,
+    UNKNOWN
 }
