@@ -1,38 +1,54 @@
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+### ===== Backend (Spring Boot / Maven) ===== ###
+server-moniter-be/target/
+server-moniter-be/.mvn/wrapper/maven-wrapper.jar
+!server-moniter-be/**/src/main/**/target/
+!server-moniter-be/**/src/test/**/target/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+server-moniter-be/.idea
+server-moniter-be/*.iws
+server-moniter-be/*.iml
+server-moniter-be/*.ipr
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+# Secrets - ห้าม push ขึ้น GitHub เด็ดขาด
+server-moniter-be/src/main/resources/application-secret.properties
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+### ===== Frontend (Next.js) ===== ###
+# dependencies
+server-monitor-fe/node_modules/
+server-monitor-fe/.pnp
+server-monitor-fe/.pnp.js
 
-### VS Code ###
+# testing
+server-monitor-fe/coverage/
+
+# next.js build output
+server-monitor-fe/.next/
+server-monitor-fe/out/
+
+# production
+server-monitor-fe/build/
+
+# misc
+server-monitor-fe/.DS_Store
+server-monitor-fe/*.pem
+
+# debug logs
+server-monitor-fe/npm-debug.log*
+server-monitor-fe/yarn-debug.log*
+server-monitor-fe/yarn-error.log*
+
+# env files - ห้าม push ขึ้น GitHub เด็ดขาด
+server-monitor-fe/.env*.local
+server-monitor-fe/.env
+
+# vercel
+server-monitor-fe/.vercel
+
+# typescript
+server-monitor-fe/*.tsbuildinfo
+server-monitor-fe/next-env.d.ts
+
+### ===== Editor / OS (ใช้ร่วมกันทั้งโปรเจค) ===== ###
 .vscode/
-
-### Secrets ###
-.env
-*.env
-application-secret.properties
+.DS_Store
+Thumbs.db
