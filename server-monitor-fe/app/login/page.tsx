@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ApiResponse } from "@/types/api";
-import { api } from "@/lib/api";
+import { loginAction } from "@/app/dashboard/actions";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -13,23 +12,24 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+      e.preventDefault();
+      setError("");
+      setLoading(true); 
 
-    try {
-      await api.post("/auth/login", {
-        username,
-        password,
-      });
+      try {
+        const result = await loginAction({ username, password });
 
-      router.push("/dashboard");
-    } catch {
-      setError("Username หรือ Password ไม่ถูกต้อง");
-    } finally {
-      setLoading(false);
-    }
-  };
+        if (result.success) {
+          router.push("/dashboard"); 
+        } else {
+          setError(result.message); 
+          setLoading(false); 
+        }
+      } catch (err) {
+        setError("Error: " + (err instanceof Error ? err.message : "Unknown error"));
+        setLoading(false); 
+      }
+    };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-950 px-6 py-12">
@@ -57,7 +57,7 @@ export default function LoginPage() {
               Server Monitor
             </h1>
             <p className="text-slate-400 text-sm">
-              เข้าสู่ระบบเพื่อจัดการ server
+              Please login to continue
             </p>
           </div>
 
@@ -116,14 +116,14 @@ export default function LoginPage() {
                   <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M17.657 17.657a8 8 0 01-11.314 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  กำลังเข้าสู่ระบบ...
+                  Loading...
                 </span>
               ) : (
                 <span className="flex items-center justify-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
-                  เข้าสู่ระบบ
+                  Login
                 </span>
               )}
             </button>
