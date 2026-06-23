@@ -11,8 +11,8 @@
     <groupId>com.servermonitor</groupId>
     <artifactId>server-monitor</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>server-moniter</name>
-    <description>server-moniter</description>
+    <name>server-monitor</name>
+    <description>server-monitor</description>
     <url/>
     <licenses>
         <license/>
