@@ -16,6 +16,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final OperatorRepository operatorRepository;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
     public String login(String username, String password) {
 
@@ -29,5 +30,20 @@ public class AuthService {
         } catch (BadCredentialsException e) {
             throw e;
         }
+    }
+    public String register(RegisterRequest request) {
+        if (operatorRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        Operator operator = Operator.builder()
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(request.getRole())
+                .build();
+
+        operatorRepository.save(operator);
+
+        return jwtService.generateToken(operator.getUsername(), operator.getRole().name());
     }
 }

@@ -39,6 +39,23 @@ public class AuthController {
                 .body(ApiResponse.ok("Login Success"));
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<String>> register(@RequestBody RegisterRequest request) {
+        String token = authService.register(request);
+
+        ResponseCookie cookie = ResponseCookie.from("token", token)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(86400)
+                .sameSite("Lax")
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(ApiResponse.ok("Register Success"));
+    }
+
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<MeResponse>> me() {
         Operator operator = (Operator) SecurityContextHolder
