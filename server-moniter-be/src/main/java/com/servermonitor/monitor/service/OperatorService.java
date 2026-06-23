@@ -50,6 +50,7 @@ public class OperatorService {
                 .lastName(request.getLastName())
                 .lineUserId(request.getLineUserId())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .role(request.getRole())
                 .build();
         return OperatorMapper.toResponse(operatorRepository.save(operator));
     }
