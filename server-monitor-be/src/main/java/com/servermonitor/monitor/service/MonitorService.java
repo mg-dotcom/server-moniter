@@ -20,9 +20,10 @@ public class MonitorService {
     private final LogRepository logRepository;
     private final LinePushMessageToOperator linePushMessageToOperator;
 
-    //    @Scheduled(fixedRate = 300000) // 5 นาที
+    
     @Transactional
-    @Scheduled(fixedRate = 10000) // test - 10 วิ
+    // @Scheduled(fixedRate = 10000) // test - 10 วิ
+    @Scheduled(fixedRate = 300000) // prod - 5 นาที
     public void checkServers() {
         List<Server> servers = serverRepository.findByIsMonitoredIsTrue();
         for (Server server : servers) {

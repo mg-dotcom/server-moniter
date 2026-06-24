@@ -20,7 +20,7 @@ type UpdateServerInput = {
 async function authHeader() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
-  return token ? { Cookie: `token=${token}` } : {}; 
+  return token ? { Authorization: `Barear ${token}` } : {};
 }
 
 export async function loginAction(credentials: any) {
