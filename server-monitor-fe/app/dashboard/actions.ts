@@ -72,16 +72,17 @@ export async function updateServer({ id, name, endpoint, isMonitored }: UpdateSe
     if (isAxiosError(err)) {
       const message = err.response?.data?.message;
       if (message?.includes("duplicate key") || message?.includes("unique constraint")) {
-        throw new Error("This endpoint is already used by another server");
+        return { error: "This endpoint is already used by another server" };
       }
-      throw new Error(message ?? "Failed to update server");
+      return { error: "Failed to update server" };
     }
-    throw err;
+    return { error: "Failed to update server" };
   }
 
   revalidatePath("/dashboard");
   revalidatePath(`/dashboard/servers/${id}`);
 }
+
 export async function removeServer(id: string) {
   await api.delete(`/servers/${id}`, {
     headers: await authHeader(),

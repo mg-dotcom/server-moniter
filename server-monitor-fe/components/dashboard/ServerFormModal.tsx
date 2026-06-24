@@ -49,12 +49,16 @@ export default function ServerFormModal({ onClose, mode, existingServer }: Props
 
         try {
             if (mode === "edit" && existingServer) {
-                await updateServer({
+                const result = await updateServer({
                     id: existingServer.id,
                     name: name.trim(),
                     endpoint: endpoint.trim(),
                     isMonitored,
                 });
+                if (result?.error) {
+                    setError(result.error);
+                    return;
+                }
             } else {
                 await addServer({
                     name: name.trim(),
@@ -63,9 +67,8 @@ export default function ServerFormModal({ onClose, mode, existingServer }: Props
             }
 
             handleClose();
-        } catch (err: unknown) {
-            const errorMsg = mode === "edit" ? "Failed to update server" : "Failed to add server";
-            setError(err instanceof Error ? err.message : errorMsg);
+        } catch {
+            setError(mode === "edit" ? "Failed to update server" : "Failed to add server");
         } finally {
             setIsLoading(false);
         }
